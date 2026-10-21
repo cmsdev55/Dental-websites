@@ -1,0 +1,537 @@
+@import "tailwindcss";
+/* Each template's own styles (keyframes, preloader variant, signature effects). */
+@import "../components/templates/lumen/styles.css";
+@import "../components/templates/studio/styles.css";
+@import "../components/templates/atelier/styles.css";
+
+/* Screens where the pinned "Your visit" section runs. Must match MEDIA.pinnable in lib/animations.ts. */
+@custom-variant pinnable (@media (min-width: 768px) and (min-height: 640px) and (prefers-reduced-motion: no-preference));
+
+/* ------------------------------------------------------------------ */
+/* Design tokens → Tailwind utilities (bg-primary, text-ink, …)        */
+/* `inline` keeps them as live var() references, so a template or      */
+/* theme can restyle everything by changing variables on a wrapper.    */
+/* ------------------------------------------------------------------ */
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-primary-muted: var(--primary-muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-deep: var(--accent-deep);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--display-face);
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Editorial themes: primary, accent, surface, ink (+ derived tones).  */
+/* Every text pair is ≥ 4.5:1 (WCAG AA).                               */
+/* ------------------------------------------------------------------ */
+:root,
+[data-theme="navy"] {
+  --primary: #0f2442;
+  --primary-ink: #f7f2e8;
+  --primary-muted: #b9c3d3;
+  --accent: #c9a45c;
+  --accent-ink: #0f2442;
+  --accent-deep: #86662a;
+  --surface: #f8f6f1;
+  --card: #ffffff;
+  --ink: #0e1b2c;
+  --muted: #4b5566;
+}
+
+[data-theme="teal"] {
+  --primary: #083b3e;
+  --primary-ink: #f2f8f6;
+  --primary-muted: #b4cfcb;
+  --accent: #f28a6e;
+  --accent-ink: #1d110d;
+  --accent-deep: #b0442b;
+  --surface: #f3f7f6;
+  --card: #ffffff;
+  --ink: #0a2224;
+  --muted: #455a5b;
+}
+
+[data-theme="sand"] {
+  --primary: #3a2a21;
+  --primary-ink: #f7efe4;
+  --primary-muted: #d2c1ae;
+  --accent: #c4925f;
+  --accent-ink: #2a1c14;
+  --accent-deep: #8b5a2b;
+  --surface: #f5efe7;
+  --card: #fcf9f5;
+  --ink: #2a1d16;
+  --muted: #665245;
+}
+
+[data-theme="sage"] {
+  --primary: #27312d;
+  --primary-ink: #eff3ec;
+  --primary-muted: #b5c2b6;
+  --accent: #a6bca3;
+  --accent-ink: #1b231f;
+  --accent-deep: #4a6852;
+  --surface: #f2f4ef;
+  --card: #ffffff;
+  --ink: #1b211e;
+  --muted: #4d5952;
+}
+
+/* ------------------------------------------------------------------ */
+/* Template art direction. These come after the themes so they win.    */
+/* ------------------------------------------------------------------ */
+:root {
+  --display-face: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+  --radius-card: 2rem;
+  --radius-media: 2rem;
+  --danger: #b42318;
+}
+
+/* Lumen: dark, cinematic, WebGL */
+[data-template="lumen"] {
+  --primary: #eef2f8;
+  --primary-ink: #070a10;
+  --primary-muted: #4b5565;
+  --accent: #7ce3f7;
+  --accent-ink: #03161c;
+  --accent-deep: #7ce3f7;
+  --surface: #070a10;
+  --card: #0e131c;
+  --ink: #eef2f8;
+  --muted: #a1acbd;
+  --danger: #ff8a80;
+  --glow-a: #7ce3f7;
+  --glow-b: #8f7cff;
+  --display-face: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 1.5rem;
+  --radius-media: 1.75rem;
+  color-scheme: dark;
+}
+
+/* Studio: bright, playful, bold */
+[data-template="studio"] {
+  --primary: #141414;
+  --primary-ink: #fbfaf6;
+  --primary-muted: #bdbdbd;
+  --accent: #8fe3c0;
+  --accent-ink: #0b2b1f;
+  --accent-deep: #0d7350;
+  --surface: #fbfaf6;
+  --card: #ffffff;
+  --ink: #141414;
+  --muted: #555555;
+  --pop-sun: #ffd45c;
+  --pop-sky: #9cc2ff;
+  --pop-pink: #ffb3c7;
+  --pop-mint: #8fe3c0;
+  --display-face: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 2.25rem;
+  --radius-media: 2.5rem;
+}
+
+/* Atelier: warm, quiet luxury */
+[data-template="atelier"] {
+  --primary: #2b1e17;
+  --primary-ink: #f3ece3;
+  --primary-muted: #cdbfb1;
+  --accent: #a9542f;
+  --accent-ink: #fff8f1;
+  --accent-deep: #9a4a28;
+  --surface: #f3ece3;
+  --card: #faf6f0;
+  --ink: #2b1e17;
+  --muted: #6b594c;
+  --danger: #a12d1b;
+  --gold: #c6a15b;
+  --display-face: var(--font-cormorant), ui-serif, Georgia, "Times New Roman", serif;
+  --radius-card: 0.75rem;
+  --radius-media: 0.75rem;
+}
+
+:root,
+[data-theme],
+[data-template] {
+  --line: color-mix(in oklab, var(--ink) 12%, transparent);
+  --line-on-primary: color-mix(in oklab, var(--primary-ink) 16%, transparent);
+}
+
+/* Match the overscroll / rubber-band area to the active page. */
+html:has([data-theme]) {
+  background-color: var(--surface);
+}
+html:has([data-theme="navy"]) { --surface: #f8f6f1; }
+html:has([data-theme="teal"]) { --surface: #f3f7f6; }
+html:has([data-theme="sand"]) { --surface: #f5efe7; }
+html:has([data-theme="sage"]) { --surface: #f2f4ef; }
+html:has([data-template="lumen"]) { --surface: #070a10; color-scheme: dark; }
+html:has([data-template="studio"]) { --surface: #fbfaf6; }
+html:has([data-template="atelier"]) { --surface: #f3ece3; }
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-deep);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .on-primary :focus-visible {
+    outline-color: var(--accent);
+  }
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+
+  h1,
+  h2,
+  h3 {
+    /* --display-face, not --font-display: the latter is resolved once at :root, so it would ignore templates. */
+    font-family: var(--display-face);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Layout utilities                                                    */
+/* ------------------------------------------------------------------ */
+@utility container-page {
+  width: 100%;
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) {
+    padding-inline: 2.5rem;
+  }
+  @media (min-width: 1280px) {
+    padding-inline: 4rem;
+  }
+}
+
+@utility section-y {
+  padding-block: 5.5rem;
+  @media (min-width: 768px) {
+    padding-block: 8rem;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Overflow mask for text that rises into view. Padding keeps descenders and italics unclipped. */
+@utility reveal-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 0.06em 0.12em;
+  margin: 0 -0.06em -0.12em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Lenis (smooth scroll)                                               */
+/* ------------------------------------------------------------------ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Intro timing. The preloader is pure CSS so it never waits for JS;   */
+/* the hero starts revealing as the curtain lifts.                     */
+/* ------------------------------------------------------------------ */
+:root {
+  --intro: 0.95s;
+}
+html[data-preloader="skip"] {
+  --intro: 0.05s;
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  animation: preloader-done 0s linear 1.5s forwards;
+}
+html[data-preloader="skip"] .preloader {
+  display: none;
+}
+
+.preloader__curtain {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  will-change: transform;
+  animation: curtain-wipe 0.62s var(--ease-in-out-quart) forwards;
+}
+.preloader__curtain--back {
+  background: var(--accent);
+  animation-delay: 0.86s;
+}
+.preloader__curtain--front {
+  background: var(--primary);
+  color: var(--primary-ink);
+  animation-delay: 0.78s;
+}
+.preloader__content {
+  animation: curtain-lag 0.62s var(--ease-in-out-quart) 0.78s forwards;
+}
+.preloader__char {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  animation: rise 0.65s var(--ease-expo) forwards;
+  animation-delay: calc(0.05s + var(--i) * var(--stagger, 0.03s));
+}
+.preloader__line {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: line-grow 0.7s var(--ease-expo) 0.15s forwards;
+}
+.preloader__meta {
+  opacity: 0;
+  animation: fade 0.5s ease 0.3s forwards;
+}
+
+/* Hero entrance */
+.intro-word {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  animation: rise 1.25s var(--ease-expo) forwards;
+  animation-delay: calc(var(--intro) + var(--i, 0) * 0.075s);
+}
+.intro-fade {
+  opacity: 0;
+  animation: fade-up 1.1s var(--ease-expo) forwards;
+  animation-delay: calc(var(--intro) + var(--d, 0s));
+}
+.intro-spring {
+  opacity: 0;
+  animation: spring-in 0.95s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--intro) + var(--d, 0s));
+}
+.intro-scale {
+  /* Transform only: the hero image stays paintable from the first frame (good for LCP). */
+  transform: scale(1.06);
+  animation: scale-in 1.4s var(--ease-expo) forwards;
+  animation-delay: calc(var(--intro) + var(--d, 0s));
+}
+
+/* Soft gradient-mesh blobs behind the hero */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+  animation: drift-a 24s ease-in-out infinite alternate;
+}
+.blob--b {
+  animation-name: drift-b;
+  animation-duration: 28s;
+}
+.blob--c {
+  animation-name: drift-c;
+  animation-duration: 32s;
+}
+
+/* Film grain for a tactile, printed feel */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+/* Custom cursor: only hide the system cursor once ours is running. */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none;
+}
+html.has-custom-cursor :is(input, textarea, select, iframe) {
+  cursor: auto;
+}
+
+/* ------------------------------------------------------------------ */
+/* Keyframes                                                           */
+/* ------------------------------------------------------------------ */
+@keyframes rise {
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes spring-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+@keyframes scale-in {
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes line-grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes curtain-wipe {
+  to {
+    transform: translate3d(0, -100%, 0);
+  }
+}
+@keyframes curtain-lag {
+  to {
+    transform: translate3d(0, 45vh, 0);
+    opacity: 0;
+  }
+}
+@keyframes preloader-done {
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes drift-a {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8%, 6%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-6%, 10%, 0) scale(0.95);
+  }
+}
+@keyframes drift-b {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-10%, -4%, 0) scale(0.92);
+  }
+  100% {
+    transform: translate3d(5%, -10%, 0) scale(1.1);
+  }
+}
+@keyframes drift-c {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
+  100% {
+    transform: translate3d(-12%, 8%, 0) scale(1.15);
+  }
+}
+@keyframes icon-pop {
+  0% {
+    transform: scale(1) rotate(0);
+  }
+  35% {
+    transform: scale(1.18) rotate(-10deg);
+  }
+  65% {
+    transform: scale(0.96) rotate(6deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion: no preloader, no movement, gentle fades only.       */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  html[data-preloader="skip"] {
+    --intro: 0s;
+  }
+  .preloader {
+    display: none;
+  }
+  .intro-word {
+    transform: none;
+    opacity: 0;
+    animation: fade 0.6s ease forwards;
+  }
+  .intro-fade,
+  .intro-spring {
+    animation: fade 0.6s ease forwards;
+  }
+  .intro-scale {
+    transform: none;
+    animation: none;
+  }
+  .blob {
+    animation: none;
+  }
+}

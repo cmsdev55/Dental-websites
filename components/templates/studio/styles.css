@@ -1,0 +1,147 @@
+/* Studio template styles */
+
+/* ------------------------------------------------------------------ */
+/* Preloader: sun-yellow and black curtains with a rounded leading     */
+/* edge that sweeps up. Same timing as the shared preloader.           */
+/* ------------------------------------------------------------------ */
+[data-template="studio"] .preloader__curtain {
+  bottom: -24vh;
+  border-radius: 0 0 50% 50% / 0 0 24vh 24vh;
+  animation-name: studio-curtain;
+}
+[data-template="studio"] .preloader__curtain--back {
+  background: var(--pop-sun);
+}
+[data-template="studio"] .preloader__content p:first-of-type {
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+[data-template="studio"] .preloader__content svg {
+  color: var(--pop-sun);
+}
+
+@keyframes studio-curtain {
+  to {
+    transform: translate3d(0, -125%, 0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero entrance (pure CSS, keyed to the preloader via --intro)        */
+/* ------------------------------------------------------------------ */
+.studio-word {
+  display: inline-block;
+  transform: translate3d(0, 110%, 0) rotate(8deg);
+  transform-origin: 0 100%;
+  animation: studio-word 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--intro) + var(--i, 0) * 0.07s);
+}
+@keyframes studio-word {
+  to {
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+.studio-scribble {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: studio-draw 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation-delay: calc(var(--intro) + 0.65s);
+}
+@keyframes studio-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.studio-sticker {
+  opacity: 0;
+  transform: scale(0.3) rotate(-30deg);
+  animation: studio-sticker 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(var(--intro) + var(--d, 0s));
+}
+@keyframes studio-sticker {
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(var(--rot, 0deg));
+  }
+}
+
+.studio-rise {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  animation: studio-rise 0.9s var(--ease-expo) forwards;
+  animation-delay: calc(var(--intro) + var(--d, 0s));
+}
+@keyframes studio-rise {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* A small wiggle on hover for anything playful */
+@keyframes studio-wiggle {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  25% {
+    rotate: -6deg;
+  }
+  75% {
+    rotate: 5deg;
+  }
+}
+
+/* Soft organic mask for the team photo */
+.studio-blob {
+  border-radius: 58% 42% 52% 48% / 46% 56% 44% 54%;
+}
+
+/* ------------------------------------------------------------------ */
+/* 3D services ring                                                    */
+/* ------------------------------------------------------------------ */
+.studio-ring {
+  --card-w: clamp(13.5rem, 62vw, 18.5rem);
+  --ring-r: calc(var(--card-w) * 0.98);
+  perspective: 1500px;
+}
+.studio-ring__cylinder {
+  position: relative;
+  width: var(--card-w);
+  height: clamp(21rem, 52vw, 24rem);
+  margin-inline: auto;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(-1 * var(--ring-r)));
+}
+.studio-ring__spin {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.studio-ring__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(calc(var(--i) * 60deg)) translateZ(var(--ring-r));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studio-word,
+  .studio-sticker,
+  .studio-rise {
+    opacity: 0;
+    transform: none;
+    animation: fade 0.6s ease forwards;
+    animation-delay: 0s;
+  }
+  .studio-sticker {
+    transform: rotate(var(--rot, 0deg));
+  }
+  .studio-scribble {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}

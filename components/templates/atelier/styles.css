@@ -1,0 +1,119 @@
+/* Atelier template styles */
+
+/* ------------------------------------------------------------------ */
+/* Preloader: the cocoa curtain opens as a growing arch, revealing a   */
+/* terracotta arch that opens in turn. Same timing as the default.     */
+/* Polygons use evenodd: the outer rectangle minus an arch (9 points). The arch is closed  */
+/* back to its first point so the bridge to the rectangle is traversed twice and cancels.  */
+/* ------------------------------------------------------------------ */
+[data-template="atelier"] .preloader__curtain {
+  animation-name: atelier-arch-open;
+  will-change: clip-path;
+  clip-path: polygon(
+    evenodd,
+    0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%,
+    50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%,
+    50% 100%,
+    0% 0%
+  );
+}
+
+@keyframes atelier-arch-open {
+  to {
+    clip-path: polygon(
+      evenodd,
+      0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%,
+      -60% 100%, -51.6% 46.4%, -27.8% 1%, 7.9% -29.4%, 50% -40%, 92.1% -29.4%, 127.8% 1%, 151.6% 46.4%, 160% 100%,
+      -60% 100%,
+      0% 0%
+    );
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero entrance (CSS, timed to the preloader via --intro)             */
+/* ------------------------------------------------------------------ */
+.atelier-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.atelier-line > span {
+  display: block;
+  transform: translate3d(0, 108%, 0);
+  animation: rise 1.35s var(--ease-expo) forwards;
+  animation-delay: calc(var(--intro) + var(--line, 0) * 0.13s);
+}
+
+/* Transform only, so the arch photo can paint (and count for LCP) from the first frame. */
+.atelier-arch-in {
+  transform: translate3d(0, 56px, 0) scale(0.97);
+  animation: atelier-settle 1.8s var(--ease-expo) forwards;
+  animation-delay: calc(var(--intro) + 0.2s);
+}
+@keyframes atelier-settle {
+  to {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.atelier-silk {
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+.atelier-silk[data-ready] {
+  opacity: 1;
+}
+
+/* A slow drop of gold down the scroll cue. */
+.atelier-scroll-cue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform-origin: top;
+  animation: atelier-cue 2.4s var(--ease-in-out-quart) infinite;
+}
+@keyframes atelier-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* Hide the native scrollbar on the swipeable journey (it stays keyboard and touch scrollable). */
+.atelier-swipe {
+  scrollbar-width: none;
+}
+.atelier-swipe::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atelier-line > span {
+    transform: none;
+    opacity: 0;
+    animation: fade 0.6s ease forwards;
+  }
+  .atelier-arch-in {
+    transform: none;
+    animation: none;
+  }
+  .atelier-scroll-cue::after {
+    animation: none;
+    transform: scaleY(0.5);
+  }
+}

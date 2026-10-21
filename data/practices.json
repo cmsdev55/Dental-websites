@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "clove-lake-dental",
+    "name": "Clove Lake Dental",
+    "city": "Staten Island",
+    "state": "NY",
+    "phone": "(718) 273-1849",
+    "doctor": "Dr. Jane Smith",
+    "rating": 4.8,
+    "reviews": 30,
+    "template": "editorial",
+    "theme": "navy"
+  },
+  {
+    "slug": "harbor-point-family-dentistry",
+    "name": "Harbor Point Family Dentistry",
+    "city": "Portland",
+    "state": "ME",
+    "phone": "(207) 555-0142",
+    "rating": 4.9,
+    "reviews": 112,
+    "template": "lumen",
+    "theme": "teal"
+  },
+  {
+    "slug": "juniper-smile-studio",
+    "name": "Juniper Smile Studio",
+    "city": "Austin",
+    "state": "TX",
+    "phone": "(512) 555-0187",
+    "template": "studio",
+    "theme": "sage"
+  },
+  {
+    "slug": "maison-dental-atelier",
+    "name": "Maison Dental Atelier",
+    "city": "Scottsdale",
+    "state": "AZ",
+    "phone": "(480) 555-0163",
+    "doctor": "Dr. Elena Ruiz",
+    "rating": 5,
+    "reviews": 64,
+    "template": "atelier",
+    "theme": "sand"
+  }
+]
