@@ -30,13 +30,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${p.name} | Dentist in ${p.city}, ${p.state}`;
   const description = `${p.name} offers modern, gentle dentistry in ${p.city}, ${p.state}: checkups, cosmetic and restorative care. Book online or call ${p.phone}.`;
   const url = `/preview/${p.slug}/`;
+  const image = { url: `/preview/${p.slug}/og.png`, width: 1200, height: 630, alt: `${p.name} website preview` };
 
   return {
     title,
     description,
     alternates: { canonical: url },
-    openGraph: { type: "website", url, title, description, siteName: p.name, locale: "en_US" },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { type: "website", url, title, description, siteName: p.name, locale: "en_US", images: [image] },
+    twitter: { card: "summary_large_image", title, description, images: [image.url] },
     robots: siteConfig.indexPreviews ? { index: true, follow: true } : { index: false, follow: false },
   };
 }
@@ -55,7 +56,7 @@ function dentistSchema(p: Practice): Record<string, unknown> {
     name: p.name,
     url: `${siteConfig.siteUrl}/preview/${p.slug}/`,
     telephone: p.phone,
-    image: `${siteConfig.siteUrl}/preview/${p.slug}/opengraph-image`,
+    image: `${siteConfig.siteUrl}/preview/${p.slug}/og.png`,
     address: {
       "@type": "PostalAddress",
       ...(p.address && { streetAddress: p.address }),

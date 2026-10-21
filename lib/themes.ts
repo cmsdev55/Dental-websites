@@ -1,4 +1,4 @@
-import type { Practice, ThemeName } from "@/lib/practices";
+import { THEMES, type Practice, type TemplateName, type ThemeName } from "@/lib/practices";
 
 interface BrandColors {
   primary: string;
@@ -28,4 +28,14 @@ const templateColors = {
 /** Editorial follows the practice's color theme; the other templates have fixed art direction. */
 export function brandColors(p: Practice): BrandColors {
   return p.template === "editorial" ? themeColors[p.theme] : templateColors[p.template];
+}
+
+/** Color dots for the gallery's design cards. Editorial shows its four themes. */
+export function templateSwatches(template: TemplateName): string[] {
+  if (template === "editorial") return THEMES.map((t) => themeColors[t].primary);
+  return {
+    lumen: ["#070a10", "#7ce3f7", "#8f7cff"],
+    studio: ["#141414", "#8fe3c0", "#ffd45c", "#ffb3c7"],
+    atelier: ["#2b1e17", "#a9542f", "#c6a15b", "#f3ece3"],
+  }[template];
 }

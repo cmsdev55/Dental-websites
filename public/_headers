@@ -1,7 +1,3 @@
-# Cloudflare Pages / Netlify. Share images are exported without a file extension,
-# so tell browsers and link-preview bots they're PNGs.
-/preview/*/opengraph-image
-  Content-Type: image/png
-
+# Cloudflare Pages / Netlify: long-cache hashed build assets.
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
